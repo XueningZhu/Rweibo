@@ -31,12 +31,12 @@ weibo=res_719[aa]
 
 ### word segment
 library(Rwordseg)
-installDict("F:/weibo/data/ËÑ¹·±ê×¼´Ê¿â.scel", dictname = "biaozhun.scel",
+installDict("F:/weibo/data/dic/ËÑ¹·±ê×¼´Ê¿â.scel", dictname = "biaozhun.scel",
             dicttype = c("scel"))
 insertWords("Î¢²©")
 stopwords=readLines("E:/R_learning/weibo/CH_stopwords.txt")
-installDict("F:/weibo/data/word_14108.scel", dictname = "word1.scel",
-            dicttype = c("scel"))
+#installDict("F:/weibo/data/word_14108.scel", dictname = "word1.scel",
+#            dicttype = c("scel"))
 
 ## my scel record, but failed
 #PuddingScel=readLines("F:/weibo/data/dic/PuddingScel.txt",encoding="UTF-8")
@@ -74,6 +74,7 @@ Clean.Weibo.list<-function(x)
 weibo_doc1=lapply(weibo,Clean.Weibo.list)
 ll=sapply(weibo_doc1,function(x) {return(is.list(x))})
 weibo_doc1=weibo_doc1[ll]
+#save(weibo_doc1,file="weibo_doc1.rda")
 
 ## sample the weibo 
 Weibo.sample<-function(x)
@@ -84,8 +85,9 @@ Weibo.sample<-function(x)
   return(x[ind])
 }
 weibo_doc1_sample=lapply(weibo_doc1,Weibo.sample)
-weibo_doc2=unlist(weibo_doc1_sample,recursive=F)
+#weibo_doc2=unlist(weibo_doc1_sample,recursive=F)
 
+weibo_doc2=unlist(weibo_doc1,recursive=F)
 #weibo_length=sapply(weibo_doc1,length)
 #save(weibo_length,file="weibo_length.rda")
 
@@ -124,7 +126,7 @@ get.mat<-function(col,com,M=F)
     mat=sparseMatrix(ijv[,1],ijv[,2],ijv[,3],
                      dims=c(nrow,ncol))
   else
-    mat=simple_triplet_matrix(ijv[,1],ijv[,2],ijv[,3], dimnames = NULL)
+    mat=simple_triplet_matrix(ijv[,1],ijv[,2],ijv[,3], ncol=length(col),dimnames = NULL)
   
   colnames(mat)=col
   return(mat)
